@@ -1,6 +1,6 @@
 package io.xlogistx.http.servlet;
 
-import io.xlogistx.common.data.MethodHolder;
+import io.xlogistx.common.data.MethodContainer;
 import org.zoxweb.server.logging.LogWrapper;
 import org.zoxweb.shared.api.APIError;
 import org.zoxweb.shared.http.HTTPEndPoint;
@@ -20,15 +20,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 public class HTTPBeanServlet
-extends HttpServlet {
+        extends HttpServlet {
     public static final APIError DEFAULT_API_ERROR = new APIError(new AccessException("Access denied.", null, true));
     public final static LogWrapper log = new LogWrapper(HTTPBeanServlet.class);
     private static AtomicLong serviceCounter = new AtomicLong();
-    private final MethodHolder mh;
+    private final MethodContainer mh;
     private final HTTPEndPoint hep;
 
 
-    public HTTPBeanServlet(HTTPEndPoint hep, MethodHolder mh) {
+    public HTTPBeanServlet(HTTPEndPoint hep, MethodContainer mh) {
         this.hep = hep;
         this.mh = mh;
     }
@@ -39,41 +39,33 @@ extends HttpServlet {
     }
 
 
-
-    public MethodHolder getMethodHolder()
-    {
+    public MethodContainer getMethodHolder() {
         return mh;
     }
 
-    public HTTPEndPoint getHTTPEndPoint()
-    {
+    public HTTPEndPoint getHTTPEndPoint() {
         return hep;
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         long delta = System.nanoTime();
         long counter = serviceCounter.incrementAndGet();
         int size = 0;
 
-        try
-        {
+        try {
 
             HTTPMethod hm = HTTPMethod.lookup(req.getMethod());
-            if (hm == null)
-            {
+            if (hm == null) {
                 super.service(req, res);
                 return;
             }
             log.getLogger().info("HTTPMethod:" + hm);
-            if (!hep.isHTTPMethodSupported(hm))
-            {
+            if (!hep.isHTTPMethodSupported(hm)) {
                 size = HTTPServletUtil.sendJSON(req, res, HTTPStatusCode.SERVICE_UNAVAILABLE, (NVEntity) new APIError("Service not support"));
                 return;
             }
-
 
 
 //            switch(hm)
@@ -116,12 +108,10 @@ extends HttpServlet {
 //            }
 
 
-        }
-        finally
-        {
+        } finally {
             //postService(req, res);
             delta = System.nanoTime() - delta;
-            log.getLogger().info(getServletName() + ":" + req.getMethod() + ":PT:" + Const.TimeInMillis.nanosToString(delta) +":TOTAL CALLS:" + counter + ":response size:" + size);
+            log.getLogger().info(getServletName() + ":" + req.getMethod() + ":PT:" + Const.TimeInMillis.nanosToString(delta) + ":TOTAL CALLS:" + counter + ":response size:" + size);
         }
     }
 }
