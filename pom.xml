@@ -148,39 +148,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>${maven-jar-plugin.version}</version>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>test-jar</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>
-
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>${maven-javadoc.version}</version>
-              <configuration>
-                <failOnError>false</failOnError>
-              </configuration>
-
-              <executions>
-                <execution>
-                  <id>attach-javadocs</id>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>
-             -->
         </plugins>
     </build>
     <dependencyManagement>
@@ -215,39 +182,11 @@
             </dependency>
 
 
-            <!--    <dependency>-->
-            <!--      <groupId>org.jsoup</groupId>-->
-            <!--      <artifactId>jsoup</artifactId>-->
-            <!--      <version>${jsoup.version}</version>-->
-            <!--    </dependency>-->
-
-
-            <!--      <dependency>-->
-            <!--          <groupId>javax.cache</groupId>-->
-            <!--          <artifactId>cache-api</artifactId>-->
-            <!--          <version>${javax-cache.version}</version>-->
-            <!--      </dependency>-->
-
-            <!--      <dependency>-->
-            <!--          <groupId>com.google.code.gson</groupId>-->
-            <!--          <artifactId>gson</artifactId>-->
-            <!--          <version>${gson.version}</version>-->
-            <!--      </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>jakarta.mail</groupId>-->
-<!--                <artifactId>jakarta.mail-api</artifactId>-->
-<!--                <version>${jakarta-mail.version}</version>-->
-<!--            </dependency>-->
-
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
             </dependency>
-
-
 
 
         </dependencies>
