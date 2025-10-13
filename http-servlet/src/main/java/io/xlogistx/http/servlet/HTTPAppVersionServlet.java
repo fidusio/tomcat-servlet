@@ -30,35 +30,30 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 @SuppressWarnings("serial")
-public class HTTPAppVersionServlet 
-	extends HttpServlet
-{
-	public final static LogWrapper log = new LogWrapper(HTTPAppVersionServlet.class);
-	private AtomicReference<String> version = new AtomicReference<String>();
-	
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			  throws ServletException, IOException 
-	{
-		if (version.get() == null)
-		{
-			log.getLogger().info("version is null");
-			String jsonResource = ApplicationConfigManager.SINGLETON.loadDefault().lookupValue(ApplicationDefaultParam.APPLICATION_VERSION_RESOURCE);
-			log.getLogger().info(jsonResource);
-			String json = HTTPServletUtil.inputStreamToString(getServletContext(), jsonResource);
-			version.set(json);
-		}
-		
-		log.getLogger().info(version.get());
-		
-		resp.setContentType(HTTPMediaType.APPLICATION_JSON.getValue());
-		resp.setCharacterEncoding(Const.UTF_8);
-		resp.addHeader("Access-Control-Allow-Origin", "*");
-		resp.getWriter().write(version.get());
-		
-	}
+public class HTTPAppVersionServlet
+        extends HttpServlet {
+    public final static LogWrapper log = new LogWrapper(HTTPAppVersionServlet.class);
+    private AtomicReference<String> version = new AtomicReference<String>();
 
-	
-	
-	
+
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        if (version.get() == null) {
+            log.getLogger().info("version is null");
+            String jsonResource = ApplicationConfigManager.SINGLETON.loadDefault().lookupValue(ApplicationDefaultParam.APPLICATION_VERSION_RESOURCE);
+            log.getLogger().info(jsonResource);
+            String json = HTTPServletUtil.inputStreamToString(getServletContext(), jsonResource);
+            version.set(json);
+        }
+
+        log.getLogger().info(version.get());
+
+        resp.setContentType(HTTPMediaType.APPLICATION_JSON.getValue());
+        resp.setCharacterEncoding(Const.UTF_8);
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.getWriter().write(version.get());
+
+    }
+
+
 }

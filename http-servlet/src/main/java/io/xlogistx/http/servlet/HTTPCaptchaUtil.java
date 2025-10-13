@@ -14,11 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-
 public final class HTTPCaptchaUtil {
 
     public final static LogWrapper log = new LogWrapper(HTTPCaptchaUtil.class);
-    private HTTPCaptchaUtil(){}
+
+    private HTTPCaptchaUtil() {
+    }
 
     public static Challenge.Status validateCaptcha(ArrayValues<GetNameValue<String>> formData,
                                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -28,9 +29,8 @@ public final class HTTPCaptchaUtil {
         // get the captcha-id and captcha
         GetNameValue<String> captchaIDParam = formData.get("captcha-id");
         GetNameValue<String> captchaParam = formData.get("captcha");
-        if(captchaIDParam == null || SUS.isEmpty(captchaIDParam.getValue()) ||
-                captchaParam == null || SUS.isEmpty(captchaParam.getValue()))
-        {
+        if (captchaIDParam == null || SUS.isEmpty(captchaIDParam.getValue()) ||
+                captchaParam == null || SUS.isEmpty(captchaParam.getValue())) {
             // if the captcha data is missing return
             HTTPServletUtil.sendJSON(req, resp, HTTPStatusCode.BAD_REQUEST, new APIError("Missing CAPTCHA"));
             log.getLogger().info("Captcha parameters are missing.");
@@ -39,8 +39,7 @@ public final class HTTPCaptchaUtil {
 
         // match the captcha-id with the challenge
         challenge = ChallengeManager.SINGLETON.lookupChallenge(captchaIDParam.getValue());
-        if(challenge == null)
-        {
+        if (challenge == null) {
             // no challenge found
             HTTPServletUtil.sendJSON(req, resp, HTTPStatusCode.BAD_REQUEST, new APIError("Missing CAPTCHA"));
             log.getLogger().info("Captcha challenge not found for " + captchaIDParam.getValue());
@@ -48,15 +47,12 @@ public final class HTTPCaptchaUtil {
         }
         // parse the captcha value
         long captchaValue = Long.parseLong(captchaParam.getValue());
-        if(!ChallengeManager.SINGLETON.validate(challenge, captchaValue))
-        {
+        if (!ChallengeManager.SINGLETON.validate(challenge, captchaValue)) {
             // challenge failed
             HTTPServletUtil.sendJSON(req, resp, HTTPStatusCode.BAD_REQUEST, new APIError("Invalid CAPTCHA"));
             log.getLogger().info("Captcha challenge mismatch expected: " + challenge.getResult() + " user sent: " + captchaValue);
             return Challenge.Status.INVALID;
         }
-
-
 
 
         return Challenge.Status.VALID;

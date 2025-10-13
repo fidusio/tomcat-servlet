@@ -23,7 +23,7 @@ public class HTTPBeanServlet
         extends HttpServlet {
     public static final APIError DEFAULT_API_ERROR = new APIError(new AccessException("Access denied.", null, true));
     public final static LogWrapper log = new LogWrapper(HTTPBeanServlet.class);
-    private static AtomicLong serviceCounter = new AtomicLong();
+    private static final AtomicLong serviceCounter = new AtomicLong();
     private final MethodContainer mh;
     private final HTTPEndPoint hep;
 
@@ -63,8 +63,7 @@ public class HTTPBeanServlet
             }
             log.getLogger().info("HTTPMethod:" + hm);
             if (!hep.isHTTPMethodSupported(hm)) {
-                size = HTTPServletUtil.sendJSON(req, res, HTTPStatusCode.SERVICE_UNAVAILABLE, (NVEntity) new APIError("Service not support"));
-                return;
+                size = HTTPServletUtil.sendJSON(req, res, HTTPStatusCode.SERVICE_UNAVAILABLE, new APIError("Service not support"));
             }
 
 

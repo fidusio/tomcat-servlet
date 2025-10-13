@@ -22,35 +22,30 @@ import javax.servlet.*;
 import java.io.IOException;
 
 public class EncodingFilter
-	implements Filter
-{
+        implements Filter {
 
-	public static final LogWrapper log = new LogWrapper(EncodingFilter.class).setEnabled(true);
-	
-	private String encoding = Const.UTF_8;
+    public static final LogWrapper log = new LogWrapper(EncodingFilter.class).setEnabled(true);
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
-        throws IOException, ServletException
-	{
-		request.setCharacterEncoding(encoding);
-		filterChain.doFilter(request, response);
-	}
+    private String encoding = Const.UTF_8;
 
-	public void init(FilterConfig filterConfig)
-	{
-		String encodingParam = filterConfig.getInitParameter("encoding");
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+            throws IOException, ServletException {
+        request.setCharacterEncoding(encoding);
+        filterChain.doFilter(request, response);
+    }
 
-		if (encodingParam != null)
-		{
-			encoding = encodingParam;
-		}
+    public void init(FilterConfig filterConfig) {
+        String encodingParam = filterConfig.getInitParameter("encoding");
 
-		if(log.isEnabled()) log.getLogger().info("Encoding:" + encoding);
-	}
+        if (encodingParam != null) {
+            encoding = encodingParam;
+        }
 
-	public void destroy()
-	{
+        if (log.isEnabled()) log.getLogger().info("Encoding:" + encoding);
+    }
 
-	}
+    public void destroy() {
+
+    }
 
 }

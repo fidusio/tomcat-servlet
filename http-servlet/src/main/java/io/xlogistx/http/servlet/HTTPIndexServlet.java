@@ -29,35 +29,29 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class HTTPIndexServlet
-    extends HttpServlet
-{
+        extends HttpServlet {
 
-	public final static LogWrapper log = new LogWrapper(HTTPIndexServlet.class);
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException
-	{
-		ApplicationConfigDAO acd = null;
-		String url = null;
-		try
-		{
-			acd = ApplicationConfigManager.SINGLETON.loadDefault();
-			//req.getLocalAddr();
-			String forwardTo = SharedStringUtil.embedText(SharedStringUtil.trimOrNull(acd.lookupValue(ApplicationDefaultParam.FORWARD_URL)), "$$LOCAL_IP$$",  SharedStringUtil.toLowerCase(req.getLocalAddr()));
-			url = resp.encodeRedirectURL(forwardTo);
-			
-		}
-		catch( Exception e)
-		{
-			log.getLogger().info("error:" + e);
-		}
-		
-		
-		if ( url != null)
-		{
-			log.getLogger().info("redirect:" + req.getRequestURL() + (req.getRequestURI() != null ? req.getRequestURI() :"")+ " from:"+ req.getHeader("User-Agent") + "-" + req.getRemoteAddr() + " Redirected URL:" + url);
-			resp.sendRedirect( url);
-		}
-		
-	}
+    public final static LogWrapper log = new LogWrapper(HTTPIndexServlet.class);
+
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        ApplicationConfigDAO acd = null;
+        String url = null;
+        try {
+            acd = ApplicationConfigManager.SINGLETON.loadDefault();
+            //req.getLocalAddr();
+            String forwardTo = SharedStringUtil.embedText(SharedStringUtil.trimOrNull(acd.lookupValue(ApplicationDefaultParam.FORWARD_URL)), "$$LOCAL_IP$$", SharedStringUtil.toLowerCase(req.getLocalAddr()));
+            url = resp.encodeRedirectURL(forwardTo);
+
+        } catch (Exception e) {
+            log.getLogger().info("error:" + e);
+        }
+
+
+        if (url != null) {
+            log.getLogger().info("redirect:" + req.getRequestURL() + (req.getRequestURI() != null ? req.getRequestURI() : "") + " from:" + req.getHeader("User-Agent") + "-" + req.getRemoteAddr() + " Redirected URL:" + url);
+            resp.sendRedirect(url);
+        }
+
+    }
 }

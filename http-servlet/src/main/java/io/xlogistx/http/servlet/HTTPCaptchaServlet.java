@@ -37,81 +37,66 @@ import java.util.UUID;
 
 @SuppressWarnings("serial")
 public class HTTPCaptchaServlet
-	extends HttpServlet
-{
-	public final static LogWrapper log = new LogWrapper(HTTPCaptchaServlet.class);
+        extends HttpServlet {
+    public final static LogWrapper log = new LogWrapper(HTTPCaptchaServlet.class);
 
-	
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			  throws ServletException, IOException 
-	{
+
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 //		int num = Math.abs(sr.nextInt() % 100000);
 //		String text = SharedStringUtil.spaceChars("" + num, SharedStringUtil.repeatSequence(" ", num % 4));
 
 //		HTTPRequestAttributes hra = (HTTPRequestAttributes) req.getAttribute(HTTPRequestAttributes.HRA);
-		Challenge.Type ct = Challenge.Type.values()[Math.abs(Challenge.SR.nextInt() % Challenge.Type.values().length)];
-		int power = 0;
+        Challenge.Type ct = Challenge.Type.values()[Math.abs(Challenge.SR.nextInt() % Challenge.Type.values().length)];
+        int power = 0;
 
 
-		HTTPRequestAttributes hra = HTTPServletUtil.extractRequestAttributes(req);
-		ArrayValues<GetNameValue<String>> formData = hra.getParameters();
-		GetNameValue<String> typeParam = formData.get("type");
-		if(typeParam != null && typeParam.getValue() != null)
-		{
-			Challenge.Type typeValue = SharedUtil.lookupEnum(typeParam.getValue(), Challenge.Type.values());
-			if(typeValue != null)
-			{
-				ct = typeValue;
-			}
-		}
+        HTTPRequestAttributes hra = HTTPServletUtil.extractRequestAttributes(req);
+        ArrayValues<GetNameValue<String>> formData = hra.getParameters();
+        GetNameValue<String> typeParam = formData.get("type");
+        if (typeParam != null && typeParam.getValue() != null) {
+            Challenge.Type typeValue = SharedUtil.lookupEnum(typeParam.getValue(), Challenge.Type.values());
+            if (typeValue != null) {
+                ct = typeValue;
+            }
+        }
 
-		GetNameValue<String> powerParam = formData.get("power");
-		if(powerParam != null && powerParam.getValue() != null)
-		{
-			try
-			{
-				power = Integer.parseInt(powerParam.getValue());
-			}
-			catch(Exception e)
-			{
+        GetNameValue<String> powerParam = formData.get("power");
+        if (powerParam != null && powerParam.getValue() != null) {
+            try {
+                power = Integer.parseInt(powerParam.getValue());
+            } catch (Exception e) {
 
-			}
-		}
+            }
+        }
 
-		if(power < 2)
-		{
-			switch(ct)
-			{
-				case ADDITION:
-				case SUBTRACTION:
-					power = 2;
-					break;
-				case CAPTCHA:
-					power = 5;
-					break;
-			}
-		}
+        if (power < 2) {
+            switch (ct) {
+                case ADDITION:
+                case SUBTRACTION:
+                    power = 2;
+                    break;
+                case CAPTCHA:
+                    power = 5;
+                    break;
+            }
+        }
 
 
-
-		Challenge challenge = Challenge.generate(ct, power, UUID.randomUUID().toString());
-		ImageInfo imageInfo = TextToImage.textToImage( challenge.format() + " ", "gif", new Font("Arial", Font.ITALIC, 18), Color.BLUE, challenge.getId());
-		resp.setContentType("image/"+imageInfo.format);
-		resp.addHeader("Captcha-Id", imageInfo.id);
-		resp.addHeader("Access-Control-Allow-Origin", "*");
-		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		resp.setHeader("Access-Control-Expose-Headers", "Captcha-Id");
-		resp.setContentLength(imageInfo.data.available());
-		ChallengeManager.SINGLETON.addChallenge(challenge, Const.TimeInMillis.MINUTE.MILLIS*30);
-		IOUtil.relayStreams(imageInfo.data, resp.getOutputStream(), true);
-
+        Challenge challenge = Challenge.generate(ct, power, UUID.randomUUID().toString());
+        ImageInfo imageInfo = TextToImage.textToImage(challenge.format() + " ", "gif", new Font("Arial", Font.ITALIC, 18), Color.BLUE, challenge.getId());
+        resp.setContentType("image/" + imageInfo.format);
+        resp.addHeader("Captcha-Id", imageInfo.id);
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        resp.setHeader("Access-Control-Expose-Headers", "Captcha-Id");
+        resp.setContentLength(imageInfo.data.available());
+        ChallengeManager.SINGLETON.addChallenge(challenge, Const.TimeInMillis.MINUTE.MILLIS * 30);
+        IOUtil.relayStreams(imageInfo.data, resp.getOutputStream(), true);
 
 
-		log.getLogger().info("Result: " + challenge.getResult() + " ID:" + imageInfo.id);
-	}
+        log.getLogger().info("Result: " + challenge.getResult() + " ID:" + imageInfo.id);
+    }
 
-	
-	
-	
+
 }

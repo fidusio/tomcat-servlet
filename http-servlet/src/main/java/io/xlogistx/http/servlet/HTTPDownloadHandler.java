@@ -26,27 +26,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface HTTPDownloadHandler
-    extends AuthenticationHandler<HttpServletRequest, HttpServletResponse>
-{
+        extends AuthenticationHandler<HttpServletRequest, HttpServletResponse> {
 
-	/**
-	 * Locate the file info source
-	 * @param request http request
-	 * @param attributes the request attributes
-	 * @return the stream source
-	 * @throws AccessException if the current subject has no permission
-	 * @throws IOException IO error
-	 */
-	FileInfoStreamSource lookupFileInfoSource(HttpServletRequest request, HTTPRequestAttributes attributes)
-        throws AccessException, IOException;
-	
-	/**
-	 * Update the file info dao
-	 * @param fileInfo to be updated
-	 * @throws AccessException if the subject user has no permission
-	 * @throws IOException IO error
-	 */
-	 void updatedFileInfoDAO(FileInfoDAO fileInfo) 
-         throws AccessException, IOException;
-	
+    /**
+     * Locate the file info source
+     * @param request http request
+     * @param attributes the request attributes
+     * @return the stream source
+     * @throws AccessException if the current subject has no permission
+     * @throws IOException IO error
+     */
+    FileInfoStreamSource lookupFileInfoSource(HttpServletRequest request, HTTPRequestAttributes attributes)
+            throws AccessException, IOException;
+
+    /**
+     * Update the file info dao
+     * @param fileInfo to be updated
+     * @throws AccessException if the subject user has no permission
+     * @throws IOException IO error
+     */
+    void updatedFileInfoDAO(FileInfoDAO fileInfo)
+            throws AccessException, IOException;
+
 }

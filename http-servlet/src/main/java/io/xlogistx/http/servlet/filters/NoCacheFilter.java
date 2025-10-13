@@ -22,41 +22,36 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class NoCacheFilter 
-	implements Filter
-{
+public class NoCacheFilter
+        implements Filter {
 
-	private static final Logger log = Logger.getLogger("");
+    private static final Logger log = Logger.getLogger("");
 
-	public void destroy()
-	{
+    public void destroy() {
 
-	}
+    }
 
-	public void init(FilterConfig config) throws ServletException
-	{
-		log.info("init");
-	}
+    public void init(FilterConfig config) throws ServletException {
+        log.info("init");
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
-        throws IOException, ServletException
-	{
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		String requestURI = httpRequest.getRequestURI();
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+            throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String requestURI = httpRequest.getRequestURI();
 
-		if (requestURI.contains(".nocache."))
-		{
-			Date now = new Date();
-			HttpServletResponse httpResponse = (HttpServletResponse) response;
-			httpResponse.setDateHeader("Date", now.getTime());
-			// one day old
-			httpResponse.setDateHeader("Expires", now.getTime() - 86400000L);
-			httpResponse.setHeader("Pragma", "no-cache");
-			httpResponse.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
-			log.info(requestURI);
-		}
+        if (requestURI.contains(".nocache.")) {
+            Date now = new Date();
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.setDateHeader("Date", now.getTime());
+            // one day old
+            httpResponse.setDateHeader("Expires", now.getTime() - 86400000L);
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setHeader("Cache-control", "no-cache, no-store, must-revalidate");
+            log.info(requestURI);
+        }
 
-		filterChain.doFilter(request, response);
-	}
+        filterChain.doFilter(request, response);
+    }
 
 }
