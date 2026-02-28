@@ -101,11 +101,11 @@ public class HTTPServletUtil {
          */
         String pathInfo = req.getPathInfo();
         //	Removing the first "/" in pathInfo.
-        pathInfo = SharedStringUtil.trimOrNull(SharedStringUtil.valueAfterLeftToken(pathInfo, "/"));
+        pathInfo = SUS.trimOrNull(SharedStringUtil.valueAfterLeftToken(pathInfo, "/"));
         //	Removing the last "/" in pathInfo.
         if (pathInfo != null) {
             if (pathInfo.endsWith("/")) {
-                pathInfo = SharedStringUtil.trimOrNull(pathInfo.substring(0, pathInfo.length() - 1));
+                pathInfo = SUS.trimOrNull(pathInfo.substring(0, pathInfo.length() - 1));
             }
         }
 

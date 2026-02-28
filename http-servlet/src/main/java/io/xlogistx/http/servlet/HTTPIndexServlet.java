@@ -19,6 +19,7 @@ import org.zoxweb.server.logging.LogWrapper;
 import org.zoxweb.server.util.ApplicationConfigManager;
 import org.zoxweb.shared.data.ApplicationConfigDAO;
 import org.zoxweb.shared.data.ApplicationConfigDAO.ApplicationDefaultParam;
+import org.zoxweb.shared.util.SUS;
 import org.zoxweb.shared.util.SharedStringUtil;
 
 import javax.servlet.http.HttpServlet;
@@ -40,7 +41,7 @@ public class HTTPIndexServlet
         try {
             acd = ApplicationConfigManager.SINGLETON.loadDefault();
             //req.getLocalAddr();
-            String forwardTo = SharedStringUtil.embedText(SharedStringUtil.trimOrNull(acd.lookupValue(ApplicationDefaultParam.FORWARD_URL)), "$$LOCAL_IP$$", SharedStringUtil.toLowerCase(req.getLocalAddr()));
+            String forwardTo = SharedStringUtil.embedText(SUS.trimOrNull(acd.lookupValue(ApplicationDefaultParam.FORWARD_URL)), "$$LOCAL_IP$$", SharedStringUtil.toLowerCase(req.getLocalAddr()));
             url = resp.encodeRedirectURL(forwardTo);
 
         } catch (Exception e) {

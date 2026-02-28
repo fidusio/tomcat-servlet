@@ -3,6 +3,7 @@ package io.xlogistx.http.servlet;
 
 import org.zoxweb.server.io.IOUtil;
 import org.zoxweb.shared.http.HTTPMessageConfig;
+import org.zoxweb.shared.io.SharedIOUtil;
 import org.zoxweb.shared.util.SharedStringUtil;
 
 import javax.websocket.*;
@@ -65,7 +66,7 @@ public class WebSocketClient
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
-        IOUtil.close(this);
+        SharedIOUtil.close(this);
     }
 
     /**
@@ -148,8 +149,8 @@ public class WebSocketClient
         }
 
         if (test) {
-            IOUtil.close(userSession);
-            IOUtil.close(closeHandler);
+            SharedIOUtil.close(userSession);
+            SharedIOUtil.close(closeHandler);
         }
     }
 

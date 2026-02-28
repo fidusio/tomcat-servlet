@@ -43,6 +43,7 @@ import org.zoxweb.shared.http.HTTPStatusCode;
 import org.zoxweb.shared.security.AccessException;
 import org.zoxweb.shared.util.GetNameValue;
 import org.zoxweb.shared.util.NVPair;
+import org.zoxweb.shared.util.SUS;
 import org.zoxweb.shared.util.SharedStringUtil;
 
 import javax.servlet.ServletException;
@@ -85,7 +86,7 @@ public class HTTPDownloadServlet
         HTTPRequestAttributes hra = HTTPServletUtil.extractRequestAttributes(request);
 
         GetNameValue<String> gnv = hra.getParameters().get("filename");
-        if (gnv == null && SharedStringUtil.trimOrNull(hra.getPathInfo()) != null) {
+        if (gnv == null && SUS.trimOrNull(hra.getPathInfo()) != null) {
             log.getLogger().info("pathinfo:" + hra.getPathInfo());
             gnv = new NVPair("filename", hra.getPathInfo());
         }
