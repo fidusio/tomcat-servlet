@@ -32,12 +32,12 @@ import org.zoxweb.server.util.cache.JWTTokenCache;
 import org.zoxweb.shared.annotation.DataProp;
 import org.zoxweb.shared.api.APIError;
 import org.zoxweb.shared.api.APIException;
-import org.zoxweb.shared.crypto.CryptoConst.AuthenticationType;
 import org.zoxweb.shared.data.ApplicationConfigDAO;
 import org.zoxweb.shared.data.ApplicationConfigDAO.ApplicationDefaultParam;
 import org.zoxweb.shared.http.*;
 import org.zoxweb.shared.security.AccessException;
 import org.zoxweb.shared.security.JWTToken;
+import org.zoxweb.shared.security.SecConst;
 import org.zoxweb.shared.util.*;
 import org.zoxweb.shared.util.Const.Bool;
 import org.zoxweb.shared.util.ExceptionReason.Reason;
@@ -179,7 +179,7 @@ public abstract class ShiroBaseServlet
         	
         	Exception exp = null;
             Subject subject = SecurityUtils.getSubject();
-            AuthenticationType reqAuth = AuthenticationType.NONE;
+            SecConst.AuthenticationType reqAuth = SecConst.AuthenticationType.NONE;
 
             if (subject == null || !subject.isAuthenticated())
             {
@@ -221,7 +221,7 @@ public abstract class ShiroBaseServlet
                 	catch(Exception e)
                 	{
                 		exp = e;
-                		reqAuth = AuthenticationType.BEARER;
+                		reqAuth = SecConst.AuthenticationType.BEARER;
                 	}
                 }
                 else
@@ -253,14 +253,14 @@ public abstract class ShiroBaseServlet
                 	}
                 	catch(Exception e)
                 	{
-                		reqAuth = AuthenticationType.BASIC;
+                		reqAuth = SecConst.AuthenticationType.BASIC;
                 	}
                 }
                 
                 //if(log.isEnabled()) log.getLogger().info("ReqAuth:" +reqAuth);
                 //if(log.isEnabled()) log.getLogger().info(hra.getPathInfo());
                 
-                if (reqAuth == AuthenticationType.NONE)
+                if (reqAuth == SecConst.AuthenticationType.NONE)
                 {
               
                 	ApplicationConfigDAO acd = ResourceManager.lookupResource(ApplicationConfigDAO.RESOURCE_NAME);
